@@ -1,0 +1,36 @@
+(a)
+function LongestSkiingPath(M[0 . . . n − 1][0 . . . n − 1])
+    // Initialise a n × n array to store the longest path at each cell of M, the initial value = -1
+    for i ← 0 to n − 1 do
+        for j ← 0 to n − 1 do
+            Result[i][j] ← −1
+    MaxPath ← 0
+    // Traverse each cell in Result and calculate the longest path abd store it in MaxPath
+    for i ← 0 to n − 1 do
+        for j ← 0 to n − 1 do
+            Result[i][j] ←PathExplore(M,Result, i, j)
+            if Result[i][j] > MaxPath then
+                MaxPath ← Result[i][j]
+    return MaxPath
+
+function PathExplore(M,Result, i, j)
+    // If the longest path in this cell has been calculated, directly return it.
+    if Result[i][j] ̸= −1 then
+        return Result[i][j]
+    // Else, explore the neighbouring accessible cells and recursively calculate the longest path.
+    else
+        xpos ← [i − 1, i, i, i + 1]
+        ypos ← [j, j − 1, j + 1, j]
+        for m ← 0 to 3 do
+            if 0 ≤ xpos[m] < n and 0 ≤ ypos[m] < n and M[xpos[m]][ypos[m]] < M[i][j] do
+                Result[i][j] ← max(1+PathExplore(M,Result, xpos[m], ypos[m]), Result[i][j])
+        // Update the value to mark it as explored.
+        Result[i][j] ← max(1, Result[i][j])
+        return Result[i][j]
+
+(b)
+• The overall time complexity of my algorithem is O(n2) and the space complexity is O(n2).
+• In function LongestSkiingPath, the initialisation of Result[0 . . . n − 1][0 . . . n − 1] is finished
+  by two for loop, and thus it costs O(n2) time complexity and O(n2) space complexity.
+• In function PathExplore, each cell is explored only once to retrieve the longest path. We have
+  n2 cells and thus traversing each cell costs O(n2) time complexity.
